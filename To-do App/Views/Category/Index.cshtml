@@ -1,0 +1,125 @@
+﻿@model IEnumerable<To_do_App.ViewModels.CategoryViewModel>
+
+<div class="container-fluid px-4 py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h4 mb-0 fw-semibold">Categories</h1>
+            <small class="text-muted">@Model.Count() categories total</small>
+        </div>
+         <a  asp-action="save" class="btn btn-dark">
+            <i class="bi bi-plus-lg me-1"></i> Add Category
+        </a> 
+    </div>
+
+    <!-- Search -->
+    <div class="input-group mb-3 w-25">
+        <span class="input-group-text bg-light border-end-0">
+            <i class="bi bi-search text-muted"></i>
+        </span>
+        <input type="text" id="searchInput" class="form-control border-start-0 bg-light"
+               placeholder="Search categories..." />
+    </div>
+
+
+    <!-- Table -->
+    <div class="card border rounded-3 shadow-none">
+        <table class="table table-hover align-middle mb-0" id="categoryTable">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 50px">#</th>
+                    <th>Name</th>
+                    <th style="width: 140px">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-5">
+                            <i class="bi bi-folder2-open fs-3 d-block mb-2"></i>
+                            No categories found.
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    int i = 1;
+                    foreach (var category in Model)
+                    {
+                        <tr>
+                            <td class="text-muted small">@i</td>
+                            <td class="fw-medium">@category.Name</td>
+
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a asp-action="Save" asp-route-id="@category.Id"
+                                           class="btn btn-sm btn-outline-secondary" title="Edit">
+                                           Edit
+                                        <i class="bi bi-pencil"></i>
+                                    </a> 
+                                    <button type="button" class="btn btn-sm btn-outline-danger"
+                                            title="Delete"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal"
+                                            data-id="@category.Id"
+                                            data-name="@category.Name">
+                                            Delete
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-semibold" id="deleteModalLabel">Delete Category?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body pt-2">
+                <p class="text-muted mb-0">
+                    "<strong id="deleteName"></strong>" will be permanently removed.
+                    This action cannot be undone.
+                </p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" asp-action="Delete">
+                    <input type="hidden" name="id" id="deleteId" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Populate delete modal
+        document.getElementById('deleteModal').addEventListener('show.bs.modal', function (e) {
+            const btn = e.relatedTarget;
+            document.getElementById('deleteId').value = btn.getAttribute('data-id');
+            document.getElementById('deleteName').textContent = btn.getAttribute('data-name');
+        });
+
+        // Live search filter
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const query = this.value.toLowerCase();
+            document.querySelectorAll('#categoryTable tbody tr').forEach(row => {
+                const name = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase() ?? '';
+                row.style.display = name.includes(query) ? '' : 'none';
+            });
+        });
+    </script>
+}

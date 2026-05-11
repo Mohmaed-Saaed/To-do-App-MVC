@@ -1,0 +1,102 @@
+﻿@model To_do_App.ViewModels.TaskItemVM.SaveTaskItemVM
+
+@using Domain.Enums
+
+@{
+    ViewData["Title"] = "Create Task";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h3 class="mb-0">Create Task</h3>
+        </div>
+
+        <div class="card-body p-4">
+
+            <form asp-action="Save" method="post">
+
+                <input type="hidden" asp-for="Id" />
+
+                <!-- Title -->
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label fw-semibold"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Enter task title" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="4"
+                              placeholder="Enter task description"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <!-- Due Date -->
+                <div class="mb-3">
+                    <label asp-for="DueDate" class="form-label fw-semibold"></label>
+                    <input asp-for="DueDate" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="DueDate" class="text-danger"></span>
+                </div>
+
+                <!-- Priority -->
+                <div class="mb-3">
+                    <label asp-for="Priority" class="form-label fw-semibold"></label>
+                    <select asp-for="Priority"
+                            asp-items="Html.GetEnumSelectList<Priority>()"
+                            class="form-select">
+                        <option value="">Select Priority</option>
+                    </select>
+                    <span asp-validation-for="Priority" class="text-danger"></span>
+                </div>
+
+                <!-- Status -->
+                <div class="mb-3">
+                    <label asp-for="Status" class="form-label fw-semibold"></label>
+                    <select asp-for="Status"
+                            asp-items="Html.GetEnumSelectList<TaskStatus>()"
+                            class="form-select">
+                        <option value="">Select Status</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <!-- Category -->
+                <div class="mb-4">
+                    <label asp-for="CategoryId" class="form-label fw-semibold"></label>
+
+                    <select asp-for="CategoryId"
+                            class="form-select"
+                            asp-items="@Model.CategoryList">
+                        <option value="">Select Category</option>
+                    </select>
+
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success px-4">
+                        Save
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-secondary px-4">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

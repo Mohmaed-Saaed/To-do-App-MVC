@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="BL/BLL.csproj" />
+  <Project Path="DAL/DAL.csproj" />
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="To-do App/PL.csproj" />
+</Solution>
