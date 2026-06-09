@@ -14,9 +14,7 @@ namespace DAL.Mapping
                 .Map(dest => dest.CategoryName,
                 src => src.Category != null ? src.Category.Name : "Uncategorized");
 
-       //     config.NewConfig<TaskItem, DTOSaveTaskItem>()
-       //.Map(dest => dest.UserId,
-       //src => src.UserId);
+
         }
     }
 }
