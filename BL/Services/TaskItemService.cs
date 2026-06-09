@@ -18,7 +18,7 @@ namespace BLL.Services
                     return true;
 
             return false;
-                
+                // Comment
             
         }
 
