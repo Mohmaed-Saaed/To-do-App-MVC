@@ -1,7 +1,7 @@
 
 # To-do App
 
-Simple Razor Pages / MVC To-do application using ASP.NET Core Identity for authentication and role-based authorization.
+MVC To-do application using ASP.NET Core Identity for authentication and role-based authorization.
 
 ## Overview
 - Users can register, login, and manage their own tasks.
